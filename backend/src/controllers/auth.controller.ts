@@ -21,9 +21,9 @@ const loginUser = async (req: Request, res: Response) => {
 		}
 	} catch (error) {
 		if (error instanceof HttpError) {
-			res.status(error.status).json({ message: error.message });
+			return res.status(error.status).json({ message: error.message });
 		} else {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				message: 'Server Error. Try Again Later.',
 			});
 		}
@@ -45,9 +45,9 @@ const registerUser = async (req: Request, res: Response) => {
 		}
 	} catch (error) {
 		if (error instanceof HttpError) {
-			res.status(error.status).json({ message: error.message });
+			return res.status(error.status).json({ message: error.message });
 		} else {
-			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				message: 'Server Error. Try Again Later.',
 			});
 		}

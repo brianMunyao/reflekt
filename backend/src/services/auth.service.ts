@@ -1,13 +1,11 @@
 import { QueryResult } from 'pg';
+import { StatusCodes } from 'http-status-codes';
 
 import pool from '../configs/db.config';
 import { comparePasswords } from '../utils/comparePasswords.util';
-
-import { ILoginCredentials } from '../types/ILoginCredentials';
-import { IUser, IUserNew } from '../types/IUser';
+import { ILoginCredentials, IUser, IUserNew } from '../types/IUser';
 import { UserModel } from '../models/User.model';
 import { HttpError } from '../utils/errors.util';
-import { StatusCodes } from 'http-status-codes';
 import { USERS_TABLE } from '../configs/constants.config';
 import hashPassword from '../utils/hashPassword.util';
 
