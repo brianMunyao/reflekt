@@ -11,4 +11,10 @@ router.post(
 	authController.loginUser
 );
 
+router.post(
+	'/register',
+	validateRequiredParamsMiddleware(['username', 'email', 'password']),
+	authController.registerUser
+);
+
 export default router;

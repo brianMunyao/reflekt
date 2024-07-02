@@ -30,8 +30,33 @@ const loginUser = async (req: Request, res: Response) => {
 	}
 };
 
+const registerUser = async (req: Request, res: Response) => {
+	try {
+		const newUser = await authService.registerUser(req.body);
+
+		if (newUser) {
+			return res.status(StatusCodes.OK).json({
+				...newUser,
+				access_token: generateAccessToken({ user_id: newUser.user_id }),
+				refresh_token: generateRefreshToken({
+					user_id: newUser.user_id,
+				}),
+			});
+		}
+	} catch (error) {
+		if (error instanceof HttpError) {
+			res.status(error.status).json({ message: error.message });
+		} else {
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				message: 'Server Error. Try Again Later.',
+			});
+		}
+	}
+};
+
 const authController = {
 	loginUser,
+	registerUser,
 };
 
 export default authController;
