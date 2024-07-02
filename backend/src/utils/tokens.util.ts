@@ -8,6 +8,9 @@ export const generateAccessToken = (user: Payload) => {
 	if (process.env.AUTH_SECRET_KEY) {
 		return jwt.sign(user, process.env.AUTH_SECRET_KEY, { expiresIn: '1d' });
 	}
+
+	console.error('ERROR:', 'Environment not setup properly');
+	throw new Error('Environment not setup properly');
 };
 export const generateRefreshToken = (user: Payload) => {
 	if (process.env.REFRESH_SECRET_KEY) {
@@ -15,6 +18,9 @@ export const generateRefreshToken = (user: Payload) => {
 			expiresIn: '7d',
 		});
 	}
+
+	console.error('ERROR:', 'Environment not setup properly');
+	throw new Error('Environment not setup properly');
 };
 
 export const verifyAccessToken = (accessToken: string) => {

@@ -12,13 +12,11 @@ const loginUser = async (req: Request, res: Response) => {
 	try {
 		const user = await authService.loginUser(req.body);
 
-		if (user) {
-			return res.status(StatusCodes.OK).json({
-				...user,
-				access_token: generateAccessToken({ user_id: user.user_id }),
-				refresh_token: generateRefreshToken({ user_id: user.user_id }),
-			});
-		}
+		return res.status(StatusCodes.OK).json({
+			user,
+			access_token: generateAccessToken({ user_id: user.user_id }),
+			refresh_token: generateRefreshToken({ user_id: user.user_id }),
+		});
 	} catch (error) {
 		if (error instanceof HttpError) {
 			return res.status(error.status).json({ message: error.message });
@@ -36,7 +34,7 @@ const registerUser = async (req: Request, res: Response) => {
 
 		if (newUser) {
 			return res.status(StatusCodes.OK).json({
-				...newUser,
+				user: newUser,
 				access_token: generateAccessToken({ user_id: newUser.user_id }),
 				refresh_token: generateRefreshToken({
 					user_id: newUser.user_id,
