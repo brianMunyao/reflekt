@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { StatusCodes } from 'http-status-codes';
 
 import authRoutes from './routes/auth.route';
+import usersRoutes from './routes/users.route';
 
 const app: Application = express();
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routers
 app.use('/api/auth/', authRoutes);
+app.use('/api/users/', usersRoutes);
 
 app.all('*', (req, res) => {
 	console.log(req.url);
