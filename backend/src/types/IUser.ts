@@ -16,7 +16,7 @@ export interface IUserNew {
 	email: string;
 }
 
-export type IUserUpdate = Partial<IUserNew>;
+export type IUserUpdate = IUserNew;
 
 export interface ILoginCredentials {
 	username: string;
