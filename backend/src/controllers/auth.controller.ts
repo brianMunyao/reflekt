@@ -32,15 +32,13 @@ const registerUser = async (req: Request, res: Response) => {
 	try {
 		const newUser = await authService.registerUser(req.body);
 
-		if (newUser) {
-			return res.status(StatusCodes.OK).json({
-				user: newUser,
-				access_token: generateAccessToken({ user_id: newUser.user_id }),
-				refresh_token: generateRefreshToken({
-					user_id: newUser.user_id,
-				}),
-			});
-		}
+		return res.status(StatusCodes.CREATED).json({
+			user: newUser,
+			access_token: generateAccessToken({ user_id: newUser.user_id }),
+			refresh_token: generateRefreshToken({
+				user_id: newUser.user_id,
+			}),
+		});
 	} catch (error) {
 		if (error instanceof HttpError) {
 			return res.status(error.status).json({ message: error.message });
