@@ -6,7 +6,7 @@ import {
 	generateAccessToken,
 } from '../utils/tokens.util';
 import authService from '../services/auth.service';
-import { HttpError } from '../utils/errors.util';
+import { handleHttpError } from '../utils/errors.util';
 
 const loginUser = async (req: Request, res: Response) => {
 	try {
@@ -18,13 +18,7 @@ const loginUser = async (req: Request, res: Response) => {
 			refresh_token: generateRefreshToken({ user_id: user.user_id }),
 		});
 	} catch (error) {
-		if (error instanceof HttpError) {
-			return res.status(error.status).json({ message: error.message });
-		} else {
-			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-				message: 'Server Error. Try Again Later.',
-			});
-		}
+		handleHttpError(res, error);
 	}
 };
 
@@ -40,13 +34,7 @@ const registerUser = async (req: Request, res: Response) => {
 			}),
 		});
 	} catch (error) {
-		if (error instanceof HttpError) {
-			return res.status(error.status).json({ message: error.message });
-		} else {
-			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-				message: 'Server Error. Try Again Later.',
-			});
-		}
+		handleHttpError(res, error);
 	}
 };
 

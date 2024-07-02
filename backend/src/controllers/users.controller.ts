@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { IGetUserAuthInfoRequest } from '../types/IGetUserAuthInfoRequest';
-import { HttpError } from '../utils/errors.util';
+import { HttpError, handleHttpError } from '../utils/errors.util';
 import usersService from '../services/users.service';
 
 const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
@@ -19,17 +19,13 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
 		);
 
 		return res.status(StatusCodes.OK).json({
-			...updatedUser,
+			success: true,
+			data: {
+				user: updatedUser,
+			},
 		});
 	} catch (error) {
-		console.log(error);
-		if (error instanceof HttpError) {
-			return res.status(error.status).json({ message: error.message });
-		} else {
-			return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-				message: 'Server Error. Try Again Later.',
-			});
-		}
+		handleHttpError(res, error);
 	}
 };
 
