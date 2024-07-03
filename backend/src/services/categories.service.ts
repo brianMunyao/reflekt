@@ -10,7 +10,7 @@ const getAllCategories = async (userId: number) => {
 	const categories: QueryResult<ICategory> = await pool.query(
 		`
 		SELECT * FROM ${CATEGORIES_TABLE}
-			WHERE created_by = $1
+			WHERE user_id = $1
         `,
 		[userId]
 	);
@@ -22,7 +22,7 @@ const getSingleCategory = async (userId: number, categoryId: number) => {
 	const category: QueryResult<ICategory> = await pool.query(
 		`
 		SELECT * FROM ${CATEGORIES_TABLE}
-			WHERE created_by = $1 AND category_id = $2
+			WHERE user_id = $1 AND category_id = $2
         `,
 		[userId, categoryId]
 	);
@@ -38,7 +38,7 @@ const getSingleCategory = async (userId: number, categoryId: number) => {
 const createCategory = async (userId: number, categoryNew: ICategoryNew) => {
 	const newCategory: QueryResult<ICategory> = await pool.query(
 		`
-        INSERT INTO ${CATEGORIES_TABLE} (name, icon, created_by)
+        INSERT INTO ${CATEGORIES_TABLE} (name, icon, user_id)
             VALUES ($1, $2, $3)
             RETURNING *
         `,
@@ -94,7 +94,7 @@ const deleteCategory = async (userId: number, categoryId: number) => {
 	const deletedCategory: QueryResult<ICategory> = await pool.query(
 		`
         DELETE FROM ${CATEGORIES_TABLE}
-        WHERE category_id = $1 AND created_by = $2
+        WHERE category_id = $1 AND user_id = $2
         RETURNING category_id;
     	`,
 		[categoryId, userId]
