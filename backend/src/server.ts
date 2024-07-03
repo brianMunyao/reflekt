@@ -8,6 +8,7 @@ import { StatusCodes } from 'http-status-codes';
 import authRoutes from './routes/auth.route';
 import usersRoutes from './routes/users.route';
 import categoriesRoutes from './routes/categories.route';
+import journalEntriesRoutes from './routes/journalEntries.route';
 
 const app: Application = express();
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth/', authRoutes);
 app.use('/api/users/', usersRoutes);
 app.use('/api/categories/', categoriesRoutes);
+app.use('/api/journal-entries/', journalEntriesRoutes);
 
 app.all('*', (req, res) => {
 	console.log(req.url);
