@@ -35,11 +35,11 @@ const getAllJournalEntries = async (
 		}
 		if (params?.start_date) {
 			queryValues.push(params.start_date);
-			_query += ` AND je.created_at >= $${queryValues.length}`;
+			_query += ` AND je.entry_date >= $${queryValues.length}`;
 		}
 		if (params?.end_date) {
 			queryValues.push(params.end_date);
-			_query += ` AND je.created_at <= $${queryValues.length}`;
+			_query += ` AND je.entry_date <= $${queryValues.length}`;
 		}
 	}
 
@@ -83,8 +83,8 @@ const createJournalEntry = async (
 
 	const newJournalEntry: QueryResult<{ entry_id: number }> = await pool.query(
 		`
-        INSERT INTO ${JOURNAL_ENTRIES_TABLE} (title, content, category_id, user_id)
-            VALUES ($1, $2, $3, $4)
+        INSERT INTO ${JOURNAL_ENTRIES_TABLE} (title, content, category_id, user_id, entry_date)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING entry_id
         `,
 		[
@@ -92,6 +92,7 @@ const createJournalEntry = async (
 			journalEntryNew.content,
 			journalEntryNew.category_id,
 			userId,
+			journalEntryNew.entry_date,
 		]
 	);
 
@@ -132,14 +133,16 @@ const updateJournalEntry = async (
 				title = $1,
 				content = $2,
 				category_id = $3,
-				updated_at = $4
-			WHERE entry_id = $5
+				entry_date = $4,
+				updated_at = $5
+			WHERE entry_id = $6
             RETURNING entry_id
         `,
 			[
 				journalEntryUpdate.title,
 				journalEntryUpdate.content,
 				journalEntryUpdate.category_id,
+				journalEntryUpdate.entry_date,
 				new Date().toISOString(),
 				journalEntryId,
 			]

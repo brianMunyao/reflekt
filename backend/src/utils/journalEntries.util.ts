@@ -45,6 +45,7 @@ const mapJournalEntryRow = (row: any): IJournalEntry => {
 		user_id: row.user_id,
 		title: row.title,
 		content: row.content,
+		entry_date: row.entry_date,
 		category_id: row.category_id,
 		created_at: row.created_at,
 		updated_at: row.updated_at,

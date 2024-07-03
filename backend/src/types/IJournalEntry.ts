@@ -3,6 +3,7 @@ import { ICategory } from './ICategory';
 export interface IJournalEntryNew {
 	title: string;
 	content: string;
+	entry_date?: string;
 	category_id?: number;
 }
 

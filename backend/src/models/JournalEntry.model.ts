@@ -3,7 +3,8 @@ export interface JournalEntryModel {
 	user_id: number; // from user model
 	title: string;
 	content: string;
-	category_id: number; // from category model
+	entry_date?: string;
+	category_id?: number; // from category model
 	created_at: string;
 	updated_at?: string;
 }
