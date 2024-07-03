@@ -3,7 +3,7 @@ import { ICategory } from './ICategory';
 export interface IJournalEntryNew {
 	title: string;
 	content: string;
-	category_id: number;
+	category_id?: number;
 }
 
 export type IJournalEntryUpdate = IJournalEntryNew;

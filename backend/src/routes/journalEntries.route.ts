@@ -21,14 +21,14 @@ router.get(
 router.post(
 	'/',
 	verifyAccessTokenMiddleware(),
-	validateRequiredParamsMiddleware(['title', 'content', 'category_id']),
+	validateRequiredParamsMiddleware(['title', 'content']),
 	journalEntriesController.createJournalEntry
 );
 
 router.put(
 	'/:id',
 	verifyAccessTokenMiddleware(),
-	validateRequiredParamsMiddleware(['title', 'content', 'category_id']),
+	validateRequiredParamsMiddleware(['title', 'content']),
 	journalEntriesController.updateJournalEntry
 );
 

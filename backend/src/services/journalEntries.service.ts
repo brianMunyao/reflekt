@@ -73,11 +73,13 @@ const createJournalEntry = async (
 	userId: number,
 	journalEntryNew: IJournalEntryNew
 ) => {
-	// Check if the user has access to the category
-	await categoriesService.getSingleCategory(
-		userId,
-		journalEntryNew.category_id
-	);
+	if (journalEntryNew?.category_id) {
+		// Check if the user has access to the category
+		await categoriesService.getSingleCategory(
+			userId,
+			journalEntryNew.category_id
+		);
+	}
 
 	const newJournalEntry: QueryResult<{ entry_id: number }> = await pool.query(
 		`
@@ -111,11 +113,13 @@ const updateJournalEntry = async (
 	journalEntryId: number,
 	journalEntryUpdate: IJournalEntryUpdate
 ) => {
-	// Check if the user has access to the category
-	await categoriesService.getSingleCategory(
-		userId,
-		journalEntryUpdate.category_id
-	);
+	if (journalEntryUpdate?.category_id) {
+		// Check if the user has access to the category
+		await categoriesService.getSingleCategory(
+			userId,
+			journalEntryUpdate.category_id
+		);
+	}
 
 	// getSingleJournalEntry handles getting the journal that the user has permission to get
 	await getSingleJournalEntry(userId, journalEntryId);
