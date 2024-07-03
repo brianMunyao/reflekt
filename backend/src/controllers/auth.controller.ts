@@ -13,6 +13,7 @@ const loginUser = async (req: Request, res: Response) => {
 		const user = await authService.loginUser(req.body);
 
 		return res.status(StatusCodes.OK).json({
+			success: true,
 			user,
 			access_token: generateAccessToken({ user_id: user.user_id }),
 			refresh_token: generateRefreshToken({ user_id: user.user_id }),
@@ -27,6 +28,7 @@ const registerUser = async (req: Request, res: Response) => {
 		const newUser = await authService.registerUser(req.body);
 
 		return res.status(StatusCodes.CREATED).json({
+			success: true,
 			user: newUser,
 			access_token: generateAccessToken({ user_id: newUser.user_id }),
 			refresh_token: generateRefreshToken({
