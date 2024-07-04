@@ -10,6 +10,7 @@ import { ThemedPage } from '@/components/ThemedPage';
 import { ThemedButton } from '@/components/ThemedButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
+import { PAGE_PADDING } from '@/constants/Dimensions';
 
 export default function LoginScreen() {
 	const { login } = useAuth();
@@ -89,7 +90,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
 	container: {
 		gap: 25,
-		padding: 20,
+		padding: PAGE_PADDING,
 		display: 'flex',
 		justifyContent: 'center',
 	},
