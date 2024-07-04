@@ -19,7 +19,7 @@ import authService from '@/api/services/authService';
 interface IAuthContext {
 	user: IUser | null;
 	loading: boolean;
-	login: (loginCredential: ILoginCredentials) => Promise<void>;
+	login: (loginCredential: ILoginCredentials) => Promise<any>;
 	logout: () => void;
 }
 
@@ -68,8 +68,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await localStore.setData(REFRESH_TOKEN_KEY, _refreshToken);
 
 			// take them to the homepage
-			router.replace('/');
 		}
+
+		return response;
 	};
 
 	const logout = async () => {

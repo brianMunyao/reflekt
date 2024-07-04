@@ -1,10 +1,13 @@
+import axios from 'axios';
+
 import { ACCESS_TOKEN_KEY } from '@/constants/LocalStoreKeys';
 import { getToken } from '@/utils/getTokenUtil';
 import localStore from '@/utils/localStoreUtil';
-import axios from 'axios';
+
+const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
 const axiosClient = axios.create({
-	baseURL: process.env.API_URL,
+	baseURL,
 	timeout: 10000,
 });
 
@@ -36,8 +39,18 @@ axiosClient.interceptors.response.use(
 		return response;
 	},
 	(error) => {
-		// Handle error
-		return Promise.reject(error);
+		try {
+			// check is the response is handled by api - will include success property in response
+			const isHandled = Object.hasOwn(error.response?.data, 'success');
+
+			if (isHandled) {
+				return error.response;
+			}
+
+			return Promise.reject(error);
+		} catch (e) {
+			return Promise.reject(error);
+		}
 	}
 );
 
