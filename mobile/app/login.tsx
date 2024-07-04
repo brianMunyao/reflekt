@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Image, StyleSheet, Platform } from 'react-native';
-import { Form, useFormik } from 'formik';
+import { StyleSheet } from 'react-native';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link, router } from 'expo-router';
 
@@ -35,7 +35,7 @@ export default function LoginScreen() {
 				router.replace('/');
 			}
 
-			setIsLoading(true);
+			setIsLoading(false);
 		},
 	});
 
