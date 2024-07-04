@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { router } from 'expo-router';
 
-import { ILoginCredentials, IUser } from '@/types/IUser';
+import { ILoginCredentials, IUser, IUserNew } from '@/types/IUser';
 import localStore from '@/utils/localStoreUtil';
 import {
 	ACCESS_TOKEN_KEY,
@@ -20,6 +20,7 @@ interface IAuthContext {
 	user: IUser | null;
 	loading: boolean;
 	login: (loginCredential: ILoginCredentials) => Promise<any>;
+	register: (newUser: IUserNew) => Promise<any>;
 	logout: () => void;
 }
 
@@ -55,6 +56,25 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 		getUserInfo();
 	});
 
+	const register = async (newUser: IUserNew) => {
+		const response = await authService.registerUser(newUser);
+
+		if (response.success) {
+			const _user = response.user;
+			const _accessToken = response.access_token;
+			const _refreshToken = response.refresh_token;
+
+			await localStore.setData(USER_KEY, _user);
+			await localStore.setData(ACCESS_TOKEN_KEY, _accessToken);
+			await localStore.setData(REFRESH_TOKEN_KEY, _refreshToken);
+
+			// take them to the homepage
+			// this is handled in the register page
+		}
+
+		return response;
+	};
+
 	const login = async (loginCredentials: ILoginCredentials) => {
 		const response = await authService.loginUser(loginCredentials);
 
@@ -68,6 +88,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await localStore.setData(REFRESH_TOKEN_KEY, _refreshToken);
 
 			// take them to the homepage
+			// this is handled in the login page
 		}
 
 		return response;
@@ -85,7 +106,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ loading, user, login, logout }}>
+		<AuthContext.Provider
+			value={{ loading, user, login, register, logout }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
