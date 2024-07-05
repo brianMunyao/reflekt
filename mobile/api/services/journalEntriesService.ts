@@ -60,10 +60,13 @@ const createJournalEntry = async (newJournalEntry: IJournalEntryNew) => {
 	}
 };
 
-const updateJournalEntry = async (updatedJournalEntry: IJournalEntryUpdate) => {
+const updateJournalEntry = async (
+	entryId: number,
+	updatedJournalEntry: IJournalEntryUpdate
+) => {
 	try {
 		const response = await axiosClient.put<IUpdateJournalEntryResponse>(
-			`/journal-entries/`,
+			`/journal-entries/${entryId}`,
 			updatedJournalEntry
 		);
 

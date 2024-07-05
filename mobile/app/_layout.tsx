@@ -55,6 +55,12 @@ export default function RootLayout() {
 								presentation: 'modal',
 							}}
 						/>
+						<Stack.Screen
+							name="journal-entries/edit"
+							options={{
+								presentation: 'modal',
+							}}
+						/>
 						<Stack.Screen name="+not-found" />
 					</Stack>
 				</ThemeProvider>

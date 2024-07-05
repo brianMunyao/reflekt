@@ -10,7 +10,11 @@ import { ThemedView } from '@/components/ThemedView';
 import { ThemedPage } from '@/components/ThemedPage';
 import { ThemedButton } from '@/components/ThemedButton';
 import { ThemedTextInput } from '@/components/ThemedTextInput';
-import { IJournalEntryNew, IJournalEntryUpdate } from '@/types/IJournalEntry';
+import {
+	IJournalEntry,
+	IJournalEntryNew,
+	IJournalEntryUpdate,
+} from '@/types/IJournalEntry';
 import { PlainTextInput } from './PlainTextInput';
 import BackIcon from './BackIcon';
 import Spacer from './Spacer';
@@ -25,9 +29,15 @@ type Props = {
 	mode?: 'new' | 'edit' | 'view';
 	formError?: string;
 	handleSubmit?: (values: IJournalEntryNew | IJournalEntryUpdate) => void;
+	formValues?: IJournalEntry;
 };
 
-const JournalEntryForm = ({ mode = 'new', formError, handleSubmit }: Props) => {
+const JournalEntryForm = ({
+	mode = 'new',
+	formError,
+	handleSubmit,
+	formValues,
+}: Props) => {
 	const color = useThemeColor({}, 'text');
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -38,13 +48,18 @@ const JournalEntryForm = ({ mode = 'new', formError, handleSubmit }: Props) => {
 
 	const { categories } = useAppSelector((state) => state.category);
 
-	const formik = useFormik({
-		initialValues: {
-			title: '',
-			content: '',
-			entry_date: dayjs().toISOString(),
-			category_id: undefined,
-		},
+	const initialValues = formValues
+		? formValues
+		: {
+				title: '',
+				content: '',
+				entry_date: dayjs().toISOString(),
+				category_id: undefined,
+		  };
+
+	const formik = useFormik<IJournalEntryNew>({
+		enableReinitialize: true, // allows us to update values in /edit mode
+		initialValues,
 		validationSchema: Yup.object({
 			title: Yup.string().required('Title is required'),
 			entry_date: Yup.string().required('Password is required'),
@@ -100,6 +115,7 @@ const JournalEntryForm = ({ mode = 'new', formError, handleSubmit }: Props) => {
 
 				<ThemedView style={styles.inputsContainer}>
 					<PlainTextInput
+						value={formik.values.title}
 						placeholder="Enter your title"
 						error={formik.errors.title}
 						touched={formik.touched.title}
@@ -146,6 +162,7 @@ const JournalEntryForm = ({ mode = 'new', formError, handleSubmit }: Props) => {
 					<ThemedTextInput
 						label="Content"
 						placeholder="Enter your content here..."
+						value={formik.values.content}
 						error={formik.errors.content}
 						touched={formik.touched.content}
 						onChangeText={formik.handleChange('content')}
