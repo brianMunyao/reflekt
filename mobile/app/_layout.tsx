@@ -8,10 +8,12 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { Provider } from 'react-redux';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AuthProvider } from '@/contexts/AuthContext';
 import ToastManager from 'toastify-react-native';
+import { store } from '@/store/store';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,20 +36,22 @@ export default function RootLayout() {
 
 	return (
 		<AuthProvider>
-			<ThemeProvider
-				value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-			>
-				<ToastManager />
+			<Provider store={store}>
+				<ThemeProvider
+					value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+				>
+					<ToastManager />
 
-				<Stack screenOptions={{ headerShown: false }}>
-					<Stack.Screen
-						name="(tabs)"
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen name="login" />
-					<Stack.Screen name="+not-found" />
-				</Stack>
-			</ThemeProvider>
+					<Stack screenOptions={{ headerShown: false }}>
+						<Stack.Screen
+							name="(tabs)"
+							options={{ headerShown: false }}
+						/>
+						<Stack.Screen name="login" />
+						<Stack.Screen name="+not-found" />
+					</Stack>
+				</ThemeProvider>
+			</Provider>
 		</AuthProvider>
 	);
 }
