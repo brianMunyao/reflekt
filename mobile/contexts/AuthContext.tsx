@@ -68,6 +68,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await localStore.setData(ACCESS_TOKEN_KEY, _accessToken);
 			await localStore.setData(REFRESH_TOKEN_KEY, _refreshToken);
 
+			setUser(_user);
+
 			// take them to the homepage
 			// this is handled in the register page
 		}
@@ -86,6 +88,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 			await localStore.setData(USER_KEY, _user);
 			await localStore.setData(ACCESS_TOKEN_KEY, _accessToken);
 			await localStore.setData(REFRESH_TOKEN_KEY, _refreshToken);
+
+			setUser(_user);
 
 			// take them to the homepage
 			// this is handled in the login page

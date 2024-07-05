@@ -59,6 +59,7 @@ export default function LoginScreen() {
 					error={formik.errors.username}
 					touched={formik.touched.username}
 					onChangeText={formik.handleChange('username')}
+					autoCapitalize="none"
 				/>
 				<ThemedTextInput
 					label="Password"
@@ -68,6 +69,7 @@ export default function LoginScreen() {
 					onChangeText={formik.handleChange('password')}
 					textContentType="password"
 					secureTextEntry
+					autoCapitalize="none"
 				/>
 			</ThemedView>
 
