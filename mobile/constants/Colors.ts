@@ -22,8 +22,11 @@ export const Colors = {
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#B0B0B0',
 
-		dangerButtonBackground: '#FF4D4F',
-		dangerButtonText: '#FFFFFF',
+		dangerButtonBackground: '#FFCDD2',
+		dangerButtonText: '#D32F2F',
+
+		secondaryButtonBackground: '#E0E0E0',
+		secondaryButtonText: '#333333',
 
 		accent: '#1DE9B6',
 		buttonBackground: '#F1F3F5',
@@ -45,8 +48,11 @@ export const Colors = {
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#393937',
 
-		dangerButtonBackground: '#FF4D4F',
-		dangerButtonText: '#FFFFFF',
+		dangerButtonBackground: '#EF9A9A',
+		dangerButtonText: '#B71C1C',
+
+		   secondaryButtonBackground: '#616161',
+    secondaryButtonText: '#FFFFFF',
 
 		accent: '#1DE9B6',
 		buttonBackground: '#1C1C1C',

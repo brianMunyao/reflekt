@@ -1,4 +1,5 @@
 import {
+	ActivityIndicator,
 	StyleSheet,
 	Text,
 	TouchableNativeFeedback,
@@ -7,6 +8,7 @@ import {
 } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { IBtnVariant } from '@/types/IBtnVariant';
 
 export type Props = TouchableNativeFeedbackProps & {
 	lightColor?: string;
@@ -15,7 +17,7 @@ export type Props = TouchableNativeFeedbackProps & {
 	label: string;
 	loading?: boolean;
 
-	variant?: 'primary' | 'danger';
+	variant?: IBtnVariant;
 };
 
 export function ThemedButton({
@@ -34,6 +36,8 @@ export function ThemedButton({
 				return 'buttonPrimaryBackground';
 			case 'danger':
 				return 'dangerButtonBackground';
+			case 'secondary':
+				return 'secondaryButtonBackground';
 			default:
 				return 'buttonPrimaryBackground';
 		}
@@ -44,6 +48,8 @@ export function ThemedButton({
 				return 'buttonPrimaryText';
 			case 'danger':
 				return 'dangerButtonText';
+			case 'secondary':
+				return 'secondaryButtonText';
 			default:
 				return 'buttonPrimaryText';
 		}
@@ -76,9 +82,13 @@ export function ThemedButton({
 			>
 				<View />
 
-				<Text style={[styles.label, { color: btnTextColor }]}>
-					{label}
-				</Text>
+				{loading ? (
+					<ActivityIndicator color={btnTextColor} />
+				) : (
+					<Text style={[styles.label, { color: btnTextColor }]}>
+						{label}
+					</Text>
+				)}
 
 				<View />
 			</View>
