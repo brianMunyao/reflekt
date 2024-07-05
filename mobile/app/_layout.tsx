@@ -11,6 +11,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AuthProvider } from '@/contexts/AuthContext';
+import ToastManager from 'toastify-react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,6 +37,8 @@ export default function RootLayout() {
 			<ThemeProvider
 				value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
 			>
+				<ToastManager />
+
 				<Stack screenOptions={{ headerShown: false }}>
 					<Stack.Screen
 						name="(tabs)"
