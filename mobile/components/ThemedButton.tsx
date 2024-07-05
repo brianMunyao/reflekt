@@ -14,6 +14,8 @@ export type Props = TouchableNativeFeedbackProps & {
 
 	label: string;
 	loading?: boolean;
+
+	variant?: 'primary' | 'danger';
 };
 
 export function ThemedButton({
@@ -23,8 +25,30 @@ export function ThemedButton({
 	label,
 	loading,
 	disabled = loading,
+	variant = 'primary',
 	...otherProps
 }: Props) {
+	const getBtnBgColor = () => {
+		switch (variant) {
+			case 'primary':
+				return 'buttonPrimaryBackground';
+			case 'danger':
+				return 'dangerButtonBackground';
+			default:
+				return 'buttonPrimaryBackground';
+		}
+	};
+	const getBtnColor = () => {
+		switch (variant) {
+			case 'primary':
+				return 'buttonPrimaryText';
+			case 'danger':
+				return 'dangerButtonText';
+			default:
+				return 'buttonPrimaryText';
+		}
+	};
+
 	const btnBgColor =
 		disabled || loading
 			? useThemeColor(
@@ -33,11 +57,11 @@ export function ThemedButton({
 			  )
 			: useThemeColor(
 					{ light: lightColor, dark: darkColor },
-					'buttonPrimaryBackground'
+					getBtnBgColor()
 			  );
 	const btnTextColor = useThemeColor(
 		{ light: lightColor, dark: darkColor },
-		'buttonPrimaryText'
+		getBtnColor()
 	);
 
 	return (

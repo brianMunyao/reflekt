@@ -20,7 +20,10 @@ export const Colors = {
 
 		buttonPrimaryBackground: '#6B9773',
 		buttonPrimaryText: '#ECEDEE',
-		buttonDisabledBackground: '#393937',
+		buttonDisabledBackground: '#B0B0B0',
+
+		dangerButtonBackground: '#FF4D4F',
+		dangerButtonText: '#FFFFFF',
 
 		accent: '#1DE9B6',
 		buttonBackground: '#F1F3F5',
@@ -38,9 +41,12 @@ export const Colors = {
 		inputBackground: '#2F2F2F',
 		inputText: '#fff',
 
-		buttonPrimaryBackground: '#6B9773',
+		buttonPrimaryBackground: '#5F7D6B',
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#393937',
+
+		dangerButtonBackground: '#FF4D4F',
+		dangerButtonText: '#FFFFFF',
 
 		accent: '#1DE9B6',
 		buttonBackground: '#1C1C1C',
