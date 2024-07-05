@@ -61,6 +61,7 @@ export default function RootLayout() {
 								presentation: 'modal',
 							}}
 						/>
+						<Stack.Screen name="update-user" />
 						<Stack.Screen name="+not-found" />
 					</Stack>
 				</ThemeProvider>

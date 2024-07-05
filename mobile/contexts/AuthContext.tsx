@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { router } from 'expo-router';
 
-import { ILoginCredentials, IUser, IUserNew } from '@/types/IUser';
+import { ILoginCredentials, IUser, IUserNew, IUserUpdate } from '@/types/IUser';
 import localStore from '@/utils/localStoreUtil';
 import {
 	ACCESS_TOKEN_KEY,
@@ -15,12 +15,14 @@ import {
 	USER_KEY,
 } from '@/constants/LocalStoreKeys';
 import authService from '@/api/services/authService';
+import usersService from '@/api/services/usersService';
 
 interface IAuthContext {
 	user: IUser | null;
 	loading: boolean;
 	login: (loginCredential: ILoginCredentials) => Promise<any>;
 	register: (newUser: IUserNew) => Promise<any>;
+	updateUserInfo: (use: IUserUpdate) => Promise<any>;
 	logout: () => void;
 }
 
@@ -98,6 +100,23 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return response;
 	};
 
+	const updateUserInfo = async (values: IUserUpdate) => {
+		const response = await usersService.updateUser(values);
+
+		if (response.success && response.data && user) {
+			const _user: IUser = {
+				...user,
+				username: response.data.user.username,
+			};
+
+			await localStore.setData(USER_KEY, _user);
+
+			setUser(_user);
+		}
+
+		return response;
+	};
+
 	const logout = async () => {
 		// clear everything and move them to login
 		await localStore.removeData(USER_KEY);
@@ -111,7 +130,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<AuthContext.Provider
-			value={{ loading, user, login, register, logout }}
+			value={{ loading, user, login, register, updateUserInfo, logout }}
 		>
 			{children}
 		</AuthContext.Provider>

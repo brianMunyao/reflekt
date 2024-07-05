@@ -1,3 +1,5 @@
+import { IResponse } from './IResponse';
+
 export interface IUser {
 	user_id: number;
 	username: string;
@@ -18,3 +20,13 @@ export interface ILoginCredentials {
 	username: string;
 	password: string;
 }
+
+// Types for the api responses
+interface IUpdatedUser {
+	user_id: number;
+	username: string;
+	email: string;
+	created_at: string;
+}
+
+export type IUpdateUserResponse = IResponse<{ user: IUpdatedUser }>;
