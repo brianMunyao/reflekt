@@ -222,11 +222,13 @@ const JournalEntryForm = ({
 					<Spacer h={10} />
 
 					<View style={styles.btnsContainer}>
-						<ThemedButton
-							variant="danger"
-							label="Delete"
-							onPress={openDeleteConfirmationModal}
-						/>
+						{mode === 'edit' && (
+							<ThemedButton
+								variant="danger"
+								label="Delete"
+								onPress={openDeleteConfirmationModal}
+							/>
+						)}
 
 						<View style={{ flex: 1 }}>
 							<ThemedButton
