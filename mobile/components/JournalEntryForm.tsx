@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -55,14 +55,16 @@ const JournalEntryForm = ({
 	const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
 		useState(false);
 
-	const initialValues = formValues
-		? formValues
-		: {
-				title: '',
-				content: '',
-				entry_date: dayjs().toISOString(),
-				category_id: undefined,
-		  };
+	const initialValues = useMemo(() => {
+		return formValues
+			? formValues
+			: {
+					title: '',
+					content: '',
+					entry_date: dayjs().toISOString(),
+					category_id: undefined,
+			  };
+	}, [formValues]);
 
 	const formik = useFormik<IJournalEntryNew>({
 		enableReinitialize: true, // allows us to update values in /edit mode
