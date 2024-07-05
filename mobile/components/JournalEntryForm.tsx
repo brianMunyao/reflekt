@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import dayjs from 'dayjs';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -20,10 +21,14 @@ import BackIcon from './BackIcon';
 import Spacer from './Spacer';
 import SelectCategoryModal from './SelectCategoryModal';
 import CategoryItem from './CategoryItem';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { ThemedCard } from './ThemedCard';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import DatePickerModal from './DatePickerModal';
+import ConfirmationModal from './ConfirmationModal';
+import journalEntriesService from '@/api/services/journalEntriesService';
+import showToastsUtil from '@/utils/showToastsUtil';
+import { deleteJournalEntry } from '@/store/slices/journalEntriesSlice';
 
 type Props = {
 	mode?: 'new' | 'edit' | 'view';
@@ -39,14 +44,16 @@ const JournalEntryForm = ({
 	formValues,
 }: Props) => {
 	const color = useThemeColor({}, 'text');
+	const { categories } = useAppSelector((state) => state.category);
+	const dispatch = useAppDispatch();
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSelectCategoryModalOpen, setIsSelectCategoryModalOpen] = useState(
 		mode === 'new' ? true : false
 	);
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-
-	const { categories } = useAppSelector((state) => state.category);
+	const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+		useState(false);
 
 	const initialValues = formValues
 		? formValues
@@ -100,6 +107,46 @@ const JournalEntryForm = ({
 	};
 	const closeDatePickerModal = () => {
 		setIsDatePickerOpen(false);
+	};
+
+	// delete confirmation functions
+
+	const openDeleteConfirmationModal = () => {
+		setIsDeleteConfirmationModalOpen(true);
+	};
+	const handleDeleteJournalEntry = () => {
+		if (formValues && mode === 'edit') {
+			journalEntriesService
+				.deleteJournalEntry(formValues?.entry_id)
+				.then((response) => {
+					if (response.success && response?.data) {
+						showToastsUtil.success(
+							response?.message || 'Journal Entry deleted'
+						);
+
+						dispatch(
+							deleteJournalEntry({ entryId: response?.data.id })
+						);
+					} else {
+						showToastsUtil.error(
+							response?.message || 'Error deleting entry'
+						);
+					}
+				})
+				.catch((error) => {
+					showToastsUtil.error(
+						error?.message || 'Error deleting entry'
+					);
+				})
+				.finally(() => {
+					setIsDeleteConfirmationModalOpen(false);
+					// move them back to home
+					router.replace('/');
+				});
+		}
+	};
+	const closeDeleteConfirmationModal = () => {
+		setIsDeleteConfirmationModalOpen(false);
 	};
 
 	return (
@@ -169,13 +216,25 @@ const JournalEntryForm = ({
 						multiline
 						style={{ flex: 1 }}
 					/>
-				</ThemedView>
 
-				<ThemedButton
-					label="Save"
-					onPress={() => formik.handleSubmit()}
-					loading={isLoading}
-				/>
+					<Spacer h={10} />
+
+					<View style={styles.btnsContainer}>
+						<ThemedButton
+							variant="danger"
+							label="Delete"
+							onPress={openDeleteConfirmationModal}
+						/>
+
+						<View style={{ flex: 1 }}>
+							<ThemedButton
+								label="Save"
+								onPress={() => formik.handleSubmit()}
+								loading={isLoading}
+							/>
+						</View>
+					</View>
+				</ThemedView>
 			</ThemedPage>
 
 			<SelectCategoryModal
@@ -189,6 +248,17 @@ const JournalEntryForm = ({
 				onClose={closeDatePickerModal}
 				onSelect={handleDateChange}
 				selectedDate={dayjs(formik.values.entry_date)}
+			/>
+
+			<ConfirmationModal
+				isVisible={isDeleteConfirmationModalOpen}
+				onClose={closeDeleteConfirmationModal}
+				title="Delete"
+				description="Are you sure you want to delete this journal?"
+				onConfirm={handleDeleteJournalEntry}
+				onCancel={closeDeleteConfirmationModal}
+				confirmBtnText="Delete"
+				confirmBtnVariant="danger"
 			/>
 		</>
 	);
@@ -214,6 +284,12 @@ const styles = StyleSheet.create({
 	inputsContainer: {
 		gap: 10,
 		flex: 1,
+	},
+	btnsContainer: {
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'row',
+		gap: 10,
 	},
 	formError: {
 		// textAlign: 'center',
