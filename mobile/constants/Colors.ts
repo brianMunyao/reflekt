@@ -21,6 +21,11 @@ export const Colors = {
 		buttonPrimaryBackground: '#6B9773',
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#393937',
+
+		accent: '#1DE9B6',
+		buttonBackground: '#F1F3F5',
+		cardBackground: '#F8F9FA',
+		divider: '#E1E4E8',
 	},
 	dark: {
 		text: '#ECEDEE',
@@ -36,5 +41,10 @@ export const Colors = {
 		buttonPrimaryBackground: '#6B9773',
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#393937',
+
+		accent: '#1DE9B6',
+		buttonBackground: '#1C1C1C',
+		cardBackground: '#1E1E1E',
+		divider: '#2C2C2C',
 	},
 };

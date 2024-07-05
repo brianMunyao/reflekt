@@ -48,6 +48,13 @@ export default function RootLayout() {
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen name="login" />
+						<Stack.Screen name="register" />
+						<Stack.Screen
+							name="journal-entries/new"
+							options={{
+								presentation: 'modal',
+							}}
+						/>
 						<Stack.Screen name="+not-found" />
 					</Stack>
 				</ThemeProvider>
