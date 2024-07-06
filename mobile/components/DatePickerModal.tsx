@@ -10,17 +10,23 @@ import { PAGE_PADDING } from '@/constants/Dimensions';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 type Props = {
+	mode?: 'single' | 'range';
 	isVisible: boolean;
 	onClose: () => void;
 	onSelect: (value: any) => void;
 	selectedDate?: Dayjs;
+	startDate?: Dayjs;
+	endDate?: Dayjs;
 };
 
 const DatePickerModal = ({
+	mode = 'single',
 	isVisible,
 	onClose,
 	onSelect,
 	selectedDate,
+	startDate,
+	endDate,
 }: Props) => {
 	const insets = useSafeAreaInsets();
 	const background = useThemeColor({}, 'buttonPrimaryBackground');
@@ -39,8 +45,10 @@ const DatePickerModal = ({
 			<View style={[styles.container, { paddingTop: insets.top }]}>
 				<ThemedView style={styles.innerContainer}>
 					<DateTimePicker
-						mode="single"
+						mode={mode}
 						date={selectedDate}
+						startDate={startDate}
+						endDate={endDate}
 						onChange={onSelect}
 						selectedItemColor={background}
 					/>
