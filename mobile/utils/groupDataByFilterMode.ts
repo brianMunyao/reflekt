@@ -1,28 +1,45 @@
-import dayjs from 'dayjs';
+import {
+	IGroupedJournalEntry,
+	IJournalEntry,
+	IJournalGroup,
+} from '@/types/IJournalEntry';
+import dayJsUTC from './dayjs';
 
-import { IFilterMode } from '@/types/IFilterMode';
-import { IJournalEntry } from '@/types/IJournalEntry';
+export const groupDataByMonth = (data: IJournalEntry[]): IJournalGroup[] => {
+	const _data = [...data];
 
-export const groupDataByMonth = (
-	data: IJournalEntry[],
-	filterMode: IFilterMode = 'monthly'
-) => {
-	const groupedData = data.reduce((acc, item) => {
-		let sectionDate: string = dayjs().format('YYYY-MM-DD');
+	const sortedData = _data.sort((a, b) =>
+		dayJsUTC(b.entry_date).diff(dayJsUTC(a.entry_date))
+	);
+
+	const groupedData = sortedData.reduce((acc, item, index, arr) => {
+		let labeledItem: IGroupedJournalEntry = { ...item, labeled: false };
+		const sectionDate = dayJsUTC(labeledItem.entry_date).format('YYYY-MM');
+		// Check if the previous item has the same date
+
+		if (
+			index > 0 &&
+			dayJsUTC(arr[index - 1].entry_date).isSame(
+				labeledItem.entry_date,
+				'day'
+			)
+		) {
+			labeledItem = { ...labeledItem, labeled: true }; // Add the labeled property
+		}
 
 		// Find existing group or create a new one
-		sectionDate = dayjs(item.entry_date).format('YYYY-MM');
 		const existingGroup = acc.find(
-			(group: any) => group.sectionDate === sectionDate
+			(group) => group.sectionDate === sectionDate
 		);
 		if (existingGroup) {
-			existingGroup.data.push(item);
+			existingGroup.data.push(labeledItem);
 		} else {
-			acc.push({ sectionDate, data: [item] });
+			// @ts-ignore
+			acc.push({ sectionDate, data: [labeledItem] });
 		}
 
 		return acc;
-	}, [] as { sectionDate: string; data: any[] }[]);
+	}, [] as IJournalGroup[]);
 
 	return groupedData;
 };

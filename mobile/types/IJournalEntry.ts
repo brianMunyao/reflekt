@@ -34,3 +34,12 @@ export type IUpdateJournalEntryResponse = IResponse<{
 	journalEntry: IJournalEntry;
 }>;
 export type IDeleteJournalEntryResponse = IResponse<{ id: number }>;
+
+// used in lists
+export interface IGroupedJournalEntry extends IJournalEntry {
+	labeled?: boolean;
+}
+export interface IJournalGroup extends IJournalEntry {
+	sectionDate: string;
+	data: IGroupedJournalEntry[];
+}

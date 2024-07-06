@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import dayjs from 'dayjs';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemedText } from '@/components/ThemedText';
@@ -17,6 +16,7 @@ import JournalGroup from '@/components/JournalGroup';
 import DateNavigator from '@/components/DateNavigator';
 import { IJournalEntry } from '@/types/IJournalEntry';
 import { groupDataByMonth } from '@/utils/groupDataByFilterMode';
+import Divider from '@/components/Divider';
 
 export default function HomeScreen() {
 	const { user } = useAuth();
@@ -25,14 +25,10 @@ export default function HomeScreen() {
 		IJournalEntry[]
 	>([]);
 
-	const [filterMode, setFilterMode] = useState<IFilterMode>('daily');
+	const [filterMode, setFilterMode] = useState<IFilterMode>('all');
 
-	const [startDate, setStartDate] = useState<string | undefined>(
-		dayjs().toISOString()
-	);
-	const [endDate, setEndDate] = useState<string | undefined>(
-		dayjs().toISOString()
-	);
+	const [startDate, setStartDate] = useState<string | undefined>(undefined);
+	const [endDate, setEndDate] = useState<string | undefined>(undefined);
 
 	const handleDateChange = (params: {
 		startDate?: string;
@@ -60,18 +56,21 @@ export default function HomeScreen() {
 
 	return (
 		<ThemedPage style={styles.pageContainer}>
-			<View style={styles.appBar}>
+			<View style={[styles.appBar, styles.padded]}>
 				<ThemedText type="title">Hello, {user?.username}</ThemedText>
 			</View>
+			<View style={styles.padded}>
+				<PromptCard />
+			</View>
 
-			<PromptCard />
-
-			<DateNavigator
-				filterMode={filterMode}
-				selectedDates={{ startDate, endDate }}
-				onFilterModeChange={setFilterMode}
-				onDateChange={handleDateChange}
-			/>
+			<View style={[styles.padded]}>
+				<DateNavigator
+					filterMode={filterMode}
+					selectedDates={{ startDate, endDate }}
+					onFilterModeChange={setFilterMode}
+					onDateChange={handleDateChange}
+				/>
+			</View>
 
 			<FlatList
 				data={groupDataByMonth(fetchedJournalEntries)}
@@ -83,11 +82,14 @@ export default function HomeScreen() {
 				)}
 				keyExtractor={(item) => item.sectionDate.toString()}
 				ListEmptyComponent={() => (
-					<ThemedText style={{ fontStyle: 'italic' }}>
-						No journal found
-					</ThemedText>
+					<View style={styles.noJournalsFound}>
+						<ThemedText style={{ fontStyle: 'italic' }}>
+							No journal found
+						</ThemedText>
+					</View>
 				)}
-				ItemSeparatorComponent={() => <Spacer h={10} />}
+				ItemSeparatorComponent={() => <Divider spacing={20} />}
+				ListFooterComponent={() => <Spacer h={50} />}
 			/>
 		</ThemedPage>
 	);
@@ -95,8 +97,13 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
 	pageContainer: {
-		padding: PAGE_PADDING,
 		gap: PAGE_GAP,
+	},
+	padded: {
+		paddingHorizontal: PAGE_PADDING,
+	},
+	dateNavigator: {
+		marginBottom: 20,
 	},
 	appBar: {
 		marginTop: PAGE_PADDING,
@@ -108,5 +115,11 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		gap: 3,
+	},
+	noJournalsFound: {
+		paddingVertical: 20,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 });

@@ -11,6 +11,8 @@ export const Colors = {
 		primary: '#006B60',
 		primaryLight: '#00897A',
 
+		white: '#fff',
+
 		secondary: '#FFC700',
 		secondaryLight: '#FFDC50',
 
@@ -43,6 +45,8 @@ export const Colors = {
 	dark: {
 		primary: '#004C45',
 		primaryLight: '#006B60',
+
+		white: '#fff',
 
 		secondary: '#B28900',
 		secondaryLight: '#FFC700',
