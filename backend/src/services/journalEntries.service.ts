@@ -30,7 +30,7 @@ const getAllJournalEntries = async (
 
 	if (params) {
 		if (params?.category_id) {
-			queryValues.push(params.category_id);
+			queryValues.push(Number(params.category_id));
 			_query += ` AND je.category_id = $${queryValues.length}`;
 		}
 		if (params?.start_date) {
@@ -45,7 +45,7 @@ const getAllJournalEntries = async (
 
 	_query += ';';
 
-	const result: QueryResult = await pool.query(query, queryValues);
+	const result: QueryResult = await pool.query(_query, queryValues);
 
 	const journalEntries: IJournalEntry[] = result.rows.map((row) =>
 		mapJournalEntryRow(row)
