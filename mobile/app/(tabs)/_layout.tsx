@@ -28,12 +28,26 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
+				name="categories"
+				options={{
+					title: 'Categories',
+					tabBarIcon: ({ color, focused }) => (
+						<TabBarIcon
+							name={
+								focused ? 'folder-open' : 'folder-open-outline'
+							}
+							color={color}
+						/>
+					),
+				}}
+			/>
+			<Tabs.Screen
 				name="settings"
 				options={{
 					title: 'Settings',
 					tabBarIcon: ({ color, focused }) => (
 						<TabBarIcon
-							name={focused ? 'cog' : 'cog-outline'}
+							name={focused ? 'settings' : 'settings-outline'}
 							color={color}
 						/>
 					),

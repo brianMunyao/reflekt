@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginHorizontal: 20,
 	},
 	innerContainer: {
 		minWidth: 300,

@@ -14,6 +14,8 @@ export const Colors = {
 		white: '#fff',
 		black: '#000',
 
+		blue: '#1E90FF',
+
 		secondary: '#FFC700',
 		secondaryLight: '#FFDC50',
 
@@ -49,6 +51,8 @@ export const Colors = {
 
 		white: '#fff',
 		black: '#000',
+
+		blue: '#1C86EE',
 
 		secondary: '#B28900',
 		secondaryLight: '#FFC700',
