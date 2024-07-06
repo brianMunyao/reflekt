@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 
-import { IGroupedJournalEntry, IJournalEntry } from '@/types/IJournalEntry';
-import { ThemedCard } from './ThemedCard';
+import { IGroupedJournalEntry } from '@/types/IJournalEntry';
 import { ThemedText } from './ThemedText';
-import { getBriefContent } from '@/utils/getBriefContent';
+import { getBriefContentUtil } from '@/utils/getBriefContentUtil';
 import dayJsUTC from '@/utils/dayjs';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
@@ -60,7 +59,7 @@ const JournalEntryCard = ({ journalEntry }: Props) => {
 				</ThemedText>
 
 				<ThemedText>
-					{getBriefContent(journalEntry.content, 150)}
+					{getBriefContentUtil(journalEntry.content, 150)}
 				</ThemedText>
 			</View>
 		</View>
