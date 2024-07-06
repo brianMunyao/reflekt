@@ -7,6 +7,7 @@ import {
 } from '../utils/tokens.util';
 import authService from '../services/auth.service';
 import { handleHttpError } from '../utils/errors.util';
+import categoriesService from '../services/categories.service';
 
 const loginUser = async (req: Request, res: Response) => {
 	try {
@@ -26,6 +27,9 @@ const loginUser = async (req: Request, res: Response) => {
 const registerUser = async (req: Request, res: Response) => {
 	try {
 		const newUser = await authService.registerUser(req.body);
+
+		// seed some basic categories after user has been successfully created
+		await categoriesService.seedCategories(newUser.user_id);
 
 		return res.status(StatusCodes.CREATED).json({
 			success: true,

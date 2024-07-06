@@ -9,6 +9,37 @@ import {
 import { HttpError } from '../utils/errors.util';
 import { StatusCodes } from 'http-status-codes';
 
+const seedCategories = async (userId: number) => {
+	const basicCategories = [
+		{ name: 'Work', icon: 'briefcase-outline' },
+		{ name: 'Personal', icon: 'accessibility-outline' },
+		{ name: 'Travel', icon: 'bus-outline' },
+	];
+
+	const values = basicCategories.flatMap((category) => [
+		category.name,
+		category.icon,
+		userId,
+	]);
+
+	const query = `
+	  INSERT INTO ${CATEGORIES_TABLE} (name, icon, user_id)
+	  VALUES
+		($1, $2, $3),
+		($4, $5, $6),
+		($7, $8, $9)
+	  RETURNING *
+	`;
+
+	const newCategories: QueryResult = await pool.query(query, values);
+
+	if (newCategories.rows.length === 0) {
+		throw new HttpError('Error creating categories. Try Again.');
+	}
+
+	return newCategories.rows;
+};
+
 const getAllCategories = async (userId: number) => {
 	const categories: QueryResult<ICategory> = await pool.query(
 		`
@@ -125,6 +156,7 @@ const deleteCategory = async (userId: number, categoryId: number) => {
 };
 
 const categoriesService = {
+	seedCategories,
 	getAllCategories,
 	getSingleCategory,
 	createCategory,
