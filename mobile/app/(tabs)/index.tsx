@@ -96,7 +96,7 @@ export default function HomeScreen() {
 				ListEmptyComponent={() => (
 					<View style={styles.noJournalsFound}>
 						<ThemedText style={{ fontStyle: 'italic' }}>
-							No journal found
+							No journal entries found
 						</ThemedText>
 					</View>
 				)}
