@@ -1,36 +1,50 @@
 import { useEffect, useState } from 'react';
-import {
-	FlatList,
-	StyleSheet,
-	TouchableWithoutFeedback,
-	View,
-} from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import dayjs from 'dayjs';
 
-import { ThemedButton } from '@/components/ThemedButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedPage } from '@/components/ThemedPage';
 import { PAGE_GAP, PAGE_PADDING } from '@/constants/Dimensions';
-import { IJournalEntry } from '@/types/IJournalEntry';
 import journalEntriesService from '@/api/services/journalEntriesService';
 import PromptCard from '@/components/PromptCard';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 import { loadJournalEntries } from '@/store/slices/journalEntriesSlice';
 import showToastsUtil from '@/utils/showToastsUtil';
-import { router } from 'expo-router';
+import { IFilterMode } from '@/types/IFilterMode';
+import Spacer from '@/components/Spacer';
+import JournalGroup from '@/components/JournalGroup';
+import DateNavigator from '@/components/DateNavigator';
+import { IJournalEntry } from '@/types/IJournalEntry';
+import { groupDataByMonth } from '@/utils/groupDataByFilterMode';
 
 export default function HomeScreen() {
-	const { user, logout } = useAuth();
-
+	const { user } = useAuth();
 	const dispatch = useAppDispatch();
-	const { journalEntries } = useAppSelector((state) => state.journalEntry);
+	const [fetchedJournalEntries, setFetchedJournalEntries] = useState<
+		IJournalEntry[]
+	>([]);
+
+	const [filterMode, setFilterMode] = useState<IFilterMode>('daily');
+
+	const [startDate, setStartDate] = useState(dayjs().toISOString());
+	const [endDate, setEndDate] = useState(dayjs().toISOString());
+
+	const handleDateChange = (params: {
+		startDate: string;
+		endDate: string;
+	}) => {
+		setStartDate(params.startDate);
+		setEndDate(params.endDate);
+	};
 
 	useEffect(() => {
 		journalEntriesService
-			.getAllJournalEntries()
+			.getAllJournalEntries({ start_date: startDate, end_date: endDate })
 			.then((response) => {
 				if (response?.success && response.data) {
 					dispatch(loadJournalEntries(response.data.journalEntries));
+					setFetchedJournalEntries(response.data.journalEntries);
 				}
 			})
 			.catch((error) => {
@@ -38,7 +52,7 @@ export default function HomeScreen() {
 					error?.message || 'Error fetching journal entries'
 				);
 			});
-	}, []);
+	}, [startDate, endDate]);
 
 	return (
 		<ThemedPage style={styles.pageContainer}>
@@ -48,30 +62,28 @@ export default function HomeScreen() {
 
 			<PromptCard />
 
+			<DateNavigator
+				filterMode={filterMode}
+				selectedDates={{ startDate, endDate }}
+				onFilterModeChange={setFilterMode}
+				onDateChange={handleDateChange}
+			/>
+
 			<FlatList
-				data={journalEntries}
+				data={groupDataByMonth(fetchedJournalEntries)}
 				renderItem={({ item }) => (
-					<TouchableWithoutFeedback
-						onPress={() =>
-							router.push({
-								pathname: 'journal-entries/edit',
-								params: {
-									entryId: item.entry_id,
-								},
-							})
-						}
-					>
-						<View>
-							<ThemedText>{item.title}</ThemedText>
-						</View>
-					</TouchableWithoutFeedback>
+					<JournalGroup
+						sectionDate={item.sectionDate}
+						data={item.data}
+					/>
 				)}
-				keyExtractor={(item) => item.entry_id.toString()}
+				keyExtractor={(item) => item.sectionDate.toString()}
 				ListEmptyComponent={() => (
 					<ThemedText style={{ fontStyle: 'italic' }}>
-						No journal entries added
+						No journal found
 					</ThemedText>
 				)}
+				ItemSeparatorComponent={() => <Spacer h={10} />}
 			/>
 		</ThemedPage>
 	);
@@ -87,5 +99,10 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+	},
+	filterOptionsContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		gap: 3,
 	},
 });

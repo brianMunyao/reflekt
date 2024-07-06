@@ -3,11 +3,17 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-const tintColorLight = '#6B9773';
+const tintColorLight = '#006B60';
 const tintColorDark = '#fff';
 
 export const Colors = {
 	light: {
+		primary: '#006B60',
+		primaryLight: '#00897A',
+
+		secondary: '#FFC700',
+		secondaryLight: '#FFDC50',
+
 		text: '#11181C',
 		background: '#fff',
 		tint: tintColorLight,
@@ -19,7 +25,7 @@ export const Colors = {
 		inputText: '#11181C',
 		inputDisabledBackground: '#E0E0E0',
 
-		buttonPrimaryBackground: '#6B9773',
+		buttonPrimaryBackground: '#006B60',
 		buttonPrimaryText: '#ECEDEE',
 		buttonDisabledBackground: '#B0B0B0',
 
@@ -35,6 +41,12 @@ export const Colors = {
 		divider: '#E1E4E8',
 	},
 	dark: {
+		primary: '#004C45',
+		primaryLight: '#006B60',
+
+		secondary: '#B28900',
+		secondaryLight: '#FFC700',
+
 		text: '#ECEDEE',
 		background: '#151718',
 		tint: tintColorDark,
