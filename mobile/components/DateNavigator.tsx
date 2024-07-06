@@ -1,18 +1,18 @@
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native';
 import React, { useState } from 'react';
-import dayjs from 'dayjs';
 import { Ionicons } from '@expo/vector-icons';
 
 import { IFilterMode } from '@/types/IFilterMode';
 import { ThemedText } from './ThemedText';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import SelectTimeIntervalModal from './SelectTimeIntervalModal';
+import dayJsUTC from '@/utils/dayjs';
 
 type Props = {
 	filterMode: IFilterMode;
-	selectedDates: { startDate: string; endDate: string };
+	selectedDates: { startDate?: string; endDate?: string };
 	onFilterModeChange?: (filterMode: IFilterMode) => void;
-	onDateChange?: (params: { startDate: string; endDate: string }) => void;
+	onDateChange?: (params: { startDate?: string; endDate?: string }) => void;
 };
 
 const DateNavigator = ({
@@ -26,16 +26,16 @@ const DateNavigator = ({
 	const [isTimeIntervaModalOpen, setIsTimeIntervaModalOpen] = useState(false);
 
 	const getLabel = () => {
-		const dayjsDate = dayjs(selectedDates.startDate);
+		const dayjsDate = dayJsUTC(selectedDates.startDate);
 
 		switch (filterMode) {
 			case 'all':
 				return 'All';
 			case 'custom':
 				return (
-					dayjs(selectedDates.startDate).format('DD/MM/YYYY') +
+					dayJsUTC(selectedDates.startDate).format('DD/MM/YYYY') +
 					' - ' +
-					dayjs(selectedDates.endDate).format('DD/MM/YYYY')
+					dayJsUTC(selectedDates.endDate).format('DD/MM/YYYY')
 				);
 			case 'weekly':
 				return (
@@ -54,7 +54,7 @@ const DateNavigator = ({
 	};
 
 	const handleSetPrevious = () => {
-		const dayjsDate = dayjs(selectedDates.startDate);
+		const dayjsDate = dayJsUTC(selectedDates.startDate);
 		let newDate = dayjsDate;
 
 		switch (filterMode) {
@@ -92,7 +92,7 @@ const DateNavigator = ({
 	};
 
 	const handleSetNext = () => {
-		const dayjsDate = dayjs(selectedDates.startDate);
+		const dayjsDate = dayJsUTC(selectedDates.startDate);
 		let newDate = dayjsDate;
 
 		switch (filterMode) {
@@ -142,8 +142,8 @@ const DateNavigator = ({
 
 		onDateChange &&
 			onDateChange({
-				startDate: params.startDate || dayjs().toISOString(),
-				endDate: params.endDate || dayjs().toISOString(),
+				startDate: params.startDate,
+				endDate: params.endDate,
 			});
 
 		setIsTimeIntervaModalOpen(false);

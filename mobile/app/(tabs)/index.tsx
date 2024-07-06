@@ -27,12 +27,16 @@ export default function HomeScreen() {
 
 	const [filterMode, setFilterMode] = useState<IFilterMode>('daily');
 
-	const [startDate, setStartDate] = useState(dayjs().toISOString());
-	const [endDate, setEndDate] = useState(dayjs().toISOString());
+	const [startDate, setStartDate] = useState<string | undefined>(
+		dayjs().toISOString()
+	);
+	const [endDate, setEndDate] = useState<string | undefined>(
+		dayjs().toISOString()
+	);
 
 	const handleDateChange = (params: {
-		startDate: string;
-		endDate: string;
+		startDate?: string;
+		endDate?: string;
 	}) => {
 		setStartDate(params.startDate);
 		setEndDate(params.endDate);

@@ -8,14 +8,18 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 
 type Props = {
 	filterMode: IFilterMode;
+	overrideIcon?: string;
 	overrideLabel?: string;
+	extraLabel?: string;
 	onPress: (mode: IFilterMode) => void;
 	isSelected?: boolean;
 };
 
 const TimeIntervalIcon = ({
 	filterMode,
+	overrideIcon,
 	overrideLabel,
+	extraLabel,
 	onPress,
 	isSelected,
 }: Props) => {
@@ -24,14 +28,16 @@ const TimeIntervalIcon = ({
 			case 'all':
 				return { icon: '∞', label: 'All time' };
 			case 'weekly':
-				return { icon: '7', label: 'Weekly' };
+				return { icon: ' 7', label: 'Weekly' };
 
 			case 'monthly':
 				return { icon: '31', label: 'Monthly' };
+			case 'custom':
+				return { icon: '1-9', label: 'Range' };
 
 			case 'daily':
 			default:
-				return { icon: '1', label: 'Daily' };
+				return { icon: ' 1', label: 'Daily' };
 		}
 	};
 
@@ -47,11 +53,12 @@ const TimeIntervalIcon = ({
 						color={isSelected ? color : ''}
 					/>
 					<ThemedText style={styles.textIcon}>
-						{getLabel().icon}
+						{overrideIcon || getLabel().icon}
 					</ThemedText>
 				</View>
 
 				<ThemedText
+					type={extraLabel ? 'defaultSemiBold' : 'default'}
 					style={{
 						textAlign: 'center',
 						color: isSelected ? color : '',
@@ -59,6 +66,17 @@ const TimeIntervalIcon = ({
 				>
 					{overrideLabel || getLabel().label}
 				</ThemedText>
+
+				{extraLabel && (
+					<ThemedText
+						style={{
+							textAlign: 'center',
+							color: isSelected ? color : '',
+						}}
+					>
+						{extraLabel}
+					</ThemedText>
+				)}
 			</View>
 		</TouchableWithoutFeedback>
 	);

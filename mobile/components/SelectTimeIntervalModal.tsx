@@ -6,12 +6,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
 import Spacer from './Spacer';
-import { ThemedButton } from './ThemedButton';
-import { IBtnVariant } from '@/types/IBtnVariant';
 import TimeIntervalIcon from './TimeIntervalIcon';
 import { IFilterMode } from '@/types/IFilterMode';
 import DatePickerModal from './DatePickerModal';
-import dayjs from 'dayjs';
+import dayJsUTC from '@/utils/dayjs';
+import DateRangePickerModal from './DateRangePickerModal';
 
 type Props = {
 	filterMode: IFilterMode;
@@ -34,10 +33,39 @@ const SelectTimeIntervalModal = ({
 	const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 	const [isDateRangePickerOpen, setIsDateRangePickerOpen] = useState(false);
 
-	const [rangeValues, setRangeValues] = useState<any>({});
+	const getDatesForInterval = (mode: IFilterMode) => {
+		const dayJsDate = dayJsUTC();
+
+		switch (mode) {
+			case 'all':
+				return {
+					startDate: undefined,
+					endDate: undefined,
+				};
+
+			case 'weekly':
+				return {
+					startDate: dayJsDate.startOf('week').toISOString(),
+					endDate: dayJsDate.endOf('week').toISOString(),
+				};
+
+			case 'monthly':
+				return {
+					startDate: dayJsDate.startOf('month').toISOString(),
+					endDate: dayJsDate.endOf('month').toISOString(),
+				};
+
+			case 'daily':
+			default:
+				return {
+					startDate: dayJsDate.toISOString(),
+					endDate: dayJsDate.toISOString(),
+				};
+		}
+	};
 
 	const handleIntervalSelection = (mode: IFilterMode) => {
-		onSelect({ mode });
+		onSelect({ mode, ...getDatesForInterval(mode) });
 	};
 
 	const openDatePickerModal = () => {
@@ -46,8 +74,8 @@ const SelectTimeIntervalModal = ({
 	const handleDateChange = (value: any) => {
 		onSelect({
 			mode: 'daily',
-			startDate: dayjs(value.date).toISOString(),
-			endDate: dayjs(value.date).toISOString(),
+			startDate: dayJsUTC(value.date).toISOString(),
+			endDate: dayJsUTC(value.date).toISOString(),
 		});
 		setIsDatePickerOpen(false);
 	};
@@ -58,16 +86,16 @@ const SelectTimeIntervalModal = ({
 	const openDateRangePickerModal = () => {
 		setIsDateRangePickerOpen(true);
 	};
-	const handleDateRangeChange = (value: any) => {
-		setRangeValues(value);
-		if (value?.startDate && value?.endDate) {
-			onSelect({
-				mode: 'custom',
-				startDate: dayjs(rangeValues.startDate).toISOString(),
-				endDate: dayjs(rangeValues.endDate).toISOString(),
-			});
-			setIsDateRangePickerOpen(false);
-		}
+	const handleDateRangeChange = (values: {
+		startDate: string;
+		endDate: string;
+	}) => {
+		onSelect({
+			mode: 'custom',
+			startDate: dayJsUTC(values.startDate).toISOString(),
+			endDate: dayJsUTC(values.endDate).toISOString(),
+		});
+		setIsDateRangePickerOpen(false);
 	};
 	const closeDateRangePickerModal = () => {
 		setIsDateRangePickerOpen(false);
@@ -140,11 +168,8 @@ const SelectTimeIntervalModal = ({
 				onSelect={handleDateChange}
 			/>
 
-			<DatePickerModal
-				mode="range"
+			<DateRangePickerModal
 				isVisible={isDateRangePickerOpen}
-				startDate={rangeValues?.startDate}
-				endDate={rangeValues?.endDate}
 				onClose={closeDateRangePickerModal}
 				onSelect={handleDateRangeChange}
 			/>

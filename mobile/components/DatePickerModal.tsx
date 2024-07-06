@@ -8,28 +8,37 @@ import { Dayjs } from 'dayjs';
 import { ThemedView } from './ThemedView';
 import { PAGE_PADDING } from '@/constants/Dimensions';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import dayJsUTC from '@/utils/dayjs';
 
 type Props = {
-	mode?: 'single' | 'range';
+	// mode?: 'single' | 'range'; // to be exposed in future
 	isVisible: boolean;
 	onClose: () => void;
 	onSelect: (value: any) => void;
 	selectedDate?: Dayjs;
 	startDate?: Dayjs;
 	endDate?: Dayjs;
+	minDate?: Dayjs;
+	maxDate?: Dayjs;
 };
 
 const DatePickerModal = ({
-	mode = 'single',
 	isVisible,
 	onClose,
 	onSelect,
 	selectedDate,
 	startDate,
 	endDate,
+	minDate,
+	maxDate,
 }: Props) => {
 	const insets = useSafeAreaInsets();
 	const background = useThemeColor({}, 'buttonPrimaryBackground');
+
+	const handleChange = (value: any) => {
+		const newDate = dayJsUTC(value.date).add(1, 'day').toISOString();
+		onSelect({ date: newDate });
+	};
 
 	return (
 		<Modal
@@ -45,11 +54,13 @@ const DatePickerModal = ({
 			<View style={[styles.container, { paddingTop: insets.top }]}>
 				<ThemedView style={styles.innerContainer}>
 					<DateTimePicker
-						mode={mode}
+						minDate={minDate}
+						maxDate={maxDate}
+						mode={'single'}
 						date={selectedDate}
 						startDate={startDate}
 						endDate={endDate}
-						onChange={onSelect}
+						onChange={handleChange}
 						selectedItemColor={background}
 					/>
 				</ThemedView>
