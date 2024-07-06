@@ -7,14 +7,13 @@ This is a simple journaling app with a backend built using Node.js, Express.js, 
 - [Prerequisites](#prerequisites)
 - [Backend Setup](#backend-setup)
 - [Mobile Setup](#mobile-setup)
-- [Running the Application](#running-the-application)
 
 ## Prerequisites
 
 - Node.js
 - PostgreSQL
 - npm
-- React Native CLI
+- Expo Go App - on your mobile phone
 
 ## Backend Setup
 
@@ -36,7 +35,7 @@ This is a simple journaling app with a backend built using Node.js, Express.js, 
 3. **Set up environment variables:**
 
    Create a `.env` file in the `backend` folder and add the following variables:
-   Copy the values in the .ev.example file and update with the correct values for your environment
+   Copy the values in the .env.example file and update with the correct values for your environment
 
 5. **Run database migrations:**
 
@@ -55,17 +54,39 @@ This is a simple journaling app with a backend built using Node.js, Express.js, 
    ```
 
 ## Mobile Setup
-- Coming soon 😁
 
-## Running the Application
-
-1. Ensure PostgreSQL is running and the backend server is started:
+1. **Navigate to the mobile directory**
 
    ```sh
-   cd backend
-   npm run dev
-   # or
-   yarn dev
+   cd reflekt/mobile
    ```
 
-2. Mobile folder coming soon 😁
+2. **Install dependencies**
+
+   ```sh
+   npm install
+   ```
+
+3. **Set up environment variables:**
+
+   Create a `.env` file in the `mobile` folder and add copy the values in the .env.example file and update with the correct values for your environment
+
+4. **Start the app**
+
+   ```sh
+    npm start
+   ```
+
+   This command will start the Expo CLI and launch the development server. You'll see a QR code and a Metro Bundler interface in your terminal or default browser.
+
+5. **Open Expo Go App:**
+
+   On your mobile device, open the Expo Go app.
+
+6. **Scan the QR Code:**
+
+   Use the Expo Go app to scan the QR code displayed in the terminal or Metro Bundler interface.
+
+7. **View Your App:**
+
+   Once scanned, your Expo app will load on your mobile device. Any changes you make to your code will automatically refresh in the Expo Go app.
