@@ -8,33 +8,33 @@ const router = Router();
 
 router.get(
 	'/',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	categoriesController.getAllCategories
 );
 
 router.get(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	categoriesController.getSingleCategory
 );
 
 router.post(
 	'/',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	validateRequiredParamsMiddleware(['name', 'icon']),
 	categoriesController.createCategory
 );
 
 router.put(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	validateRequiredParamsMiddleware(['name', 'icon']),
 	categoriesController.updateCategory
 );
 
 router.delete(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	categoriesController.deleteCategory
 );
 

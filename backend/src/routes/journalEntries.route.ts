@@ -8,33 +8,33 @@ const router = Router();
 
 router.get(
 	'/',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	journalEntriesController.getAllJournalEntries
 );
 
 router.get(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	journalEntriesController.getSingleJournalEntry
 );
 
 router.post(
 	'/',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	validateRequiredParamsMiddleware(['title', 'content']),
 	journalEntriesController.createJournalEntry
 );
 
 router.put(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	validateRequiredParamsMiddleware(['title', 'content']),
 	journalEntriesController.updateJournalEntry
 );
 
 router.delete(
 	'/:id',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	journalEntriesController.deleteJournalEntry
 );
 

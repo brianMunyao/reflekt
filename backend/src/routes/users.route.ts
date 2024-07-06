@@ -8,7 +8,7 @@ const router = Router();
 
 router.put(
 	'/',
-	verifyAccessTokenMiddleware(),
+	verifyAccessTokenMiddleware,
 	validateRequiredParamsMiddleware(['username', 'email', 'password']),
 	usersController.updateUser
 );
