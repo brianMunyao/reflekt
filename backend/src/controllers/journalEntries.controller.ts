@@ -1,12 +1,12 @@
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { IGetUserAuthInfoRequest } from '../types/IGetUserAuthInfoRequest';
+import { IAuthenticatedRequest } from '../types/IAuthenticatedRequest';
 import { HttpError, handleHttpError } from '../utils/errors.util';
 import journalEntriesService from '../services/journalEntries.service';
 
 const getAllJournalEntries = async (
-	req: IGetUserAuthInfoRequest,
+	req: IAuthenticatedRequest,
 	res: Response
 ) => {
 	try {
@@ -31,7 +31,7 @@ const getAllJournalEntries = async (
 };
 
 const getSingleJournalEntry = async (
-	req: IGetUserAuthInfoRequest,
+	req: IAuthenticatedRequest,
 	res: Response
 ) => {
 	try {
@@ -56,7 +56,7 @@ const getSingleJournalEntry = async (
 };
 
 const createJournalEntry = async (
-	req: IGetUserAuthInfoRequest,
+	req: IAuthenticatedRequest,
 	res: Response
 ) => {
 	try {
@@ -82,7 +82,7 @@ const createJournalEntry = async (
 };
 
 const updateJournalEntry = async (
-	req: IGetUserAuthInfoRequest,
+	req: IAuthenticatedRequest,
 	res: Response
 ) => {
 	try {
@@ -109,7 +109,7 @@ const updateJournalEntry = async (
 };
 
 const deleteJournalEntry = async (
-	req: IGetUserAuthInfoRequest,
+	req: IAuthenticatedRequest,
 	res: Response
 ) => {
 	try {

@@ -1,14 +1,11 @@
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { IGetUserAuthInfoRequest } from '../types/IGetUserAuthInfoRequest';
+import { IAuthenticatedRequest } from '../types/IAuthenticatedRequest';
 import { HttpError, handleHttpError } from '../utils/errors.util';
 import categoriesService from '../services/categories.service';
 
-const getAllCategories = async (
-	req: IGetUserAuthInfoRequest,
-	res: Response
-) => {
+const getAllCategories = async (req: IAuthenticatedRequest, res: Response) => {
 	try {
 		if (!req.user)
 			throw new HttpError(
@@ -29,10 +26,7 @@ const getAllCategories = async (
 	}
 };
 
-const getSingleCategory = async (
-	req: IGetUserAuthInfoRequest,
-	res: Response
-) => {
+const getSingleCategory = async (req: IAuthenticatedRequest, res: Response) => {
 	try {
 		if (!req.user)
 			throw new HttpError(
@@ -54,7 +48,7 @@ const getSingleCategory = async (
 	}
 };
 
-const createCategory = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const createCategory = async (req: IAuthenticatedRequest, res: Response) => {
 	try {
 		if (!req.user)
 			throw new HttpError(
@@ -76,7 +70,7 @@ const createCategory = async (req: IGetUserAuthInfoRequest, res: Response) => {
 	}
 };
 
-const updateCategory = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const updateCategory = async (req: IAuthenticatedRequest, res: Response) => {
 	try {
 		if (!req.user)
 			throw new HttpError(
@@ -99,7 +93,7 @@ const updateCategory = async (req: IGetUserAuthInfoRequest, res: Response) => {
 	}
 };
 
-const deleteCategory = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const deleteCategory = async (req: IAuthenticatedRequest, res: Response) => {
 	try {
 		if (!req.user)
 			throw new HttpError(
