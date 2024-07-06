@@ -2,7 +2,10 @@ import { QueryResult } from 'pg';
 
 import { ICategory, ICategoryNew, ICategoryUpdate } from '../types/ICategory';
 import pool from '../configs/db.config';
-import { CATEGORIES_TABLE } from '../configs/constants.config';
+import {
+	CATEGORIES_TABLE,
+	JOURNAL_ENTRIES_TABLE,
+} from '../configs/constants.config';
 import { HttpError } from '../utils/errors.util';
 import { StatusCodes } from 'http-status-codes';
 
@@ -90,6 +93,19 @@ const updateCategory = async (
 const deleteCategory = async (userId: number, categoryId: number) => {
 	// getSingleCategory handles getting the category that the user has permission to get
 	await getSingleCategory(userId, categoryId);
+
+	// check if a journal is linked to a category then remove the link
+	const journalsLinked = await pool.query(
+		`SELECT entry_id FROM ${JOURNAL_ENTRIES_TABLE} WHERE category_id=$1`,
+		[categoryId]
+	);
+
+	if (journalsLinked.rows.length > 0) {
+		await pool.query(
+			`UPDATE ${JOURNAL_ENTRIES_TABLE} SET category_id=null WHERE category_id=$1`,
+			[categoryId]
+		);
+	}
 
 	const deletedCategory: QueryResult<ICategory> = await pool.query(
 		`
