@@ -18,6 +18,7 @@ export type Props = TouchableNativeFeedbackProps & {
 	loading?: boolean;
 
 	variant?: IBtnVariant;
+	size?: 'small' | 'normal';
 };
 
 export function ThemedButton({
@@ -28,12 +29,15 @@ export function ThemedButton({
 	loading,
 	disabled = loading,
 	variant = 'primary',
+	size = 'normal',
 	...otherProps
 }: Props) {
 	const getBtnBgColor = () => {
 		switch (variant) {
 			case 'primary':
 				return 'buttonPrimaryBackground';
+			case 'primary2':
+				return 'secondary';
 			case 'danger':
 				return 'dangerButtonBackground';
 			case 'secondary':
@@ -46,6 +50,8 @@ export function ThemedButton({
 		switch (variant) {
 			case 'primary':
 				return 'buttonPrimaryText';
+			case 'primary2':
+				return 'black';
 			case 'danger':
 				return 'dangerButtonText';
 			case 'secondary':
@@ -70,6 +76,16 @@ export function ThemedButton({
 		getBtnColor()
 	);
 
+	const getSize = () => {
+		switch (size) {
+			case 'small':
+				return { fontSize: 16, padding: 12 };
+			case 'normal':
+			default:
+				return { fontSize: 18, padding: 15 };
+		}
+	};
+
 	return (
 		<TouchableNativeFeedback {...otherProps}>
 			<View
@@ -77,6 +93,7 @@ export function ThemedButton({
 					styles.container,
 					{
 						backgroundColor: btnBgColor,
+						padding: getSize().padding,
 					},
 				]}
 			>
@@ -85,7 +102,15 @@ export function ThemedButton({
 				{loading ? (
 					<ActivityIndicator color={btnTextColor} />
 				) : (
-					<Text style={[styles.label, { color: btnTextColor }]}>
+					<Text
+						style={[
+							styles.label,
+							{
+								color: btnTextColor,
+								fontSize: getSize().fontSize,
+							},
+						]}
+					>
 						{label}
 					</Text>
 				)}
@@ -98,14 +123,12 @@ export function ThemedButton({
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 15,
 		borderRadius: 12,
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},
 	label: {
-		fontSize: 18,
 		fontWeight: 500,
 		letterSpacing: 0.3,
 		flexShrink: 1,

@@ -1,1 +1,1 @@
-export type IBtnVariant = 'primary' | 'danger' | 'secondary';
+export type IBtnVariant = 'primary' | 'primary2' | 'danger' | 'secondary';

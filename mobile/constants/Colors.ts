@@ -12,6 +12,7 @@ export const Colors = {
 		primaryLight: '#00897A',
 
 		white: '#fff',
+		black: '#000',
 
 		secondary: '#FFC700',
 		secondaryLight: '#FFDC50',
@@ -47,6 +48,7 @@ export const Colors = {
 		primaryLight: '#006B60',
 
 		white: '#fff',
+		black: '#000',
 
 		secondary: '#B28900',
 		secondaryLight: '#FFC700',

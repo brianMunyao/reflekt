@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedPage } from '@/components/ThemedPage';
-import { PAGE_GAP, PAGE_PADDING } from '@/constants/Dimensions';
+import { PAGE_PADDING } from '@/constants/Dimensions';
 import journalEntriesService from '@/api/services/journalEntriesService';
-import PromptCard from '@/components/PromptCard';
 import { useAppDispatch } from '@/store/hooks';
 import { loadJournalEntries } from '@/store/slices/journalEntriesSlice';
 import showToastsUtil from '@/utils/showToastsUtil';
@@ -17,6 +17,8 @@ import DateNavigator from '@/components/DateNavigator';
 import { IJournalEntry } from '@/types/IJournalEntry';
 import { groupDataByMonth } from '@/utils/groupDataByFilterMode';
 import Divider from '@/components/Divider';
+import GreetingCard from '@/components/GreetingCard';
+import { ThemedButton } from '@/components/ThemedButton';
 
 export default function HomeScreen() {
 	const { user } = useAuth();
@@ -38,6 +40,10 @@ export default function HomeScreen() {
 		setEndDate(params.endDate);
 	};
 
+	const goToAddNewJournalEntry = () => {
+		router.push('/journal-entries/new');
+	};
+
 	useEffect(() => {
 		journalEntriesService
 			.getAllJournalEntries({ start_date: startDate, end_date: endDate })
@@ -56,11 +62,15 @@ export default function HomeScreen() {
 
 	return (
 		<ThemedPage style={styles.pageContainer}>
-			<View style={[styles.appBar, styles.padded]}>
-				<ThemedText type="title">Hello, {user?.username}</ThemedText>
-			</View>
-			<View style={styles.padded}>
-				<PromptCard />
+			<View style={[styles.topSection, styles.padded]}>
+				<GreetingCard textAlign="center" />
+
+				<ThemedButton
+					size="small"
+					variant="primary2"
+					label="What's on your mind?"
+					onPress={goToAddNewJournalEntry}
+				/>
 			</View>
 
 			<View style={[styles.padded]}>
@@ -71,8 +81,10 @@ export default function HomeScreen() {
 					onDateChange={handleDateChange}
 				/>
 			</View>
+			<Divider spacing={0} />
 
 			<FlatList
+				ListHeaderComponent={() => <Spacer h={20} />}
 				data={groupDataByMonth(fetchedJournalEntries)}
 				renderItem={({ item }) => (
 					<JournalGroup
@@ -88,7 +100,14 @@ export default function HomeScreen() {
 						</ThemedText>
 					</View>
 				)}
-				ItemSeparatorComponent={() => <Divider spacing={20} />}
+				ItemSeparatorComponent={() => (
+					<Divider
+						spacing={20}
+						style={{
+							backgroundColor: 'rgba(211, 211, 211, 0.404)',
+						}}
+					/>
+				)}
 				ListFooterComponent={() => <Spacer h={50} />}
 			/>
 		</ThemedPage>
@@ -96,14 +115,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-	pageContainer: {
-		gap: PAGE_GAP,
-	},
+	pageContainer: {},
 	padded: {
 		paddingHorizontal: PAGE_PADDING,
 	},
-	dateNavigator: {
-		marginBottom: 20,
+	topSection: {
+		gap: 20,
+		paddingTop: 30,
 	},
 	appBar: {
 		marginTop: PAGE_PADDING,
