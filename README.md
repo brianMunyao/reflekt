@@ -7,6 +7,7 @@ This is a simple journaling app with a backend built using Node.js, Express.js, 
 - [Prerequisites](#prerequisites)
 - [Backend Setup](#backend-setup)
 - [Mobile Setup](#mobile-setup)
+- [Relevant Links](#links)
 
 ## Prerequisites
 
@@ -90,3 +91,7 @@ This is a simple journaling app with a backend built using Node.js, Express.js, 
 7. **View Your App:**
 
    Once scanned, your Expo app will load on your mobile device. Any changes you make to your code will automatically refresh in the Expo Go app.
+
+## Links
+- [Documentation Link](https://1drv.ms/w/c/3054576ae05795f8/EZD7DdbcNS5HiUN1c9w0GzcBr-DQHbcF-YdQNf5xkCyxiA?e=4bYfNr)
+- [Postman Link](https://galactic-capsule-912631.postman.co/workspace/Reflekt~c9936799-6169-4940-951b-c7348cab0359/collection/23059500-37efc3d2-8314-49ce-b18b-b148f0fff775?action=share&creator=23059500&active-environment=23059500-a53d26d0-01c9-4f2f-b8e1-8659b9ba3231)
