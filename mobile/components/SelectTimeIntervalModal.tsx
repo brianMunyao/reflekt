@@ -45,22 +45,34 @@ const SelectTimeIntervalModal = ({
 
 			case 'weekly':
 				return {
-					startDate: dayJsDate.startOf('week').toISOString(),
-					endDate: dayJsDate.endOf('week').toISOString(),
+					startDate: dayJsDate.startOf('week').format('YYYY-MM-DD'),
+					endDate: dayJsDate
+						.endOf('week')
+						.add(1, 'day')
+						.format('YYYY-MM-DD'),
 				};
 
 			case 'monthly':
 				return {
-					startDate: dayJsDate.startOf('month').toISOString(),
-					endDate: dayJsDate.endOf('month').toISOString(),
+					startDate: dayJsDate.startOf('month').format('YYYY-MM-DD'),
+					endDate: dayJsDate
+						.endOf('month')
+						.add(1, 'day')
+						.format('YYYY-MM-DD'),
 				};
 
 			case 'daily':
 			default:
 				return {
-					startDate: dayJsDate.toISOString(),
-					endDate: dayJsDate.toISOString(),
+					startDate: dayJsDate.format('YYYY-MM-DD'),
+					endDate: dayJsDate.add(1, 'day').format('YYYY-MM-DD'),
 				};
+
+			/**
+			 *
+			 * We add 1 day to avoid a SQL query error that chops the last day off when
+			 * fetching data btwn two dates
+			 */
 		}
 	};
 
@@ -74,8 +86,8 @@ const SelectTimeIntervalModal = ({
 	const handleDateChange = (value: any) => {
 		onSelect({
 			mode: 'daily',
-			startDate: dayJsUTC(value.date).toISOString(),
-			endDate: dayJsUTC(value.date).toISOString(),
+			startDate: dayJsUTC(value.date).format('YYYY-MM-DD'),
+			endDate: dayJsUTC(value.date).format('YYYY-MM-DD'),
 		});
 		setIsDatePickerOpen(false);
 	};
@@ -92,8 +104,8 @@ const SelectTimeIntervalModal = ({
 	}) => {
 		onSelect({
 			mode: 'custom',
-			startDate: dayJsUTC(values.startDate).toISOString(),
-			endDate: dayJsUTC(values.endDate).toISOString(),
+			startDate: dayJsUTC(values.startDate).format('YYYY-MM-DD'),
+			endDate: dayJsUTC(values.endDate).format('YYYY-MM-DD'),
 		});
 		setIsDateRangePickerOpen(false);
 	};
