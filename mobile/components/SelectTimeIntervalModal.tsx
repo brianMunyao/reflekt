@@ -11,6 +11,7 @@ import { IFilterMode } from '@/types/IFilterMode';
 import DatePickerModal from './DatePickerModal';
 import dayJsUTC from '@/utils/dayjs';
 import DateRangePickerModal from './DateRangePickerModal';
+import { getDateISOStrUtil } from '@/utils/getDateISOStrUtil';
 
 type Props = {
 	filterMode: IFilterMode;
@@ -45,27 +46,25 @@ const SelectTimeIntervalModal = ({
 
 			case 'weekly':
 				return {
-					startDate: dayJsDate.startOf('week').format('YYYY-MM-DD'),
-					endDate: dayJsDate
-						.endOf('week')
-						.add(1, 'day')
-						.format('YYYY-MM-DD'),
+					startDate: getDateISOStrUtil(dayJsDate.startOf('week')),
+					endDate: getDateISOStrUtil(
+						dayJsDate.endOf('week').add(1, 'day')
+					),
 				};
 
 			case 'monthly':
 				return {
-					startDate: dayJsDate.startOf('month').format('YYYY-MM-DD'),
-					endDate: dayJsDate
-						.endOf('month')
-						.add(1, 'day')
-						.format('YYYY-MM-DD'),
+					startDate: getDateISOStrUtil(dayJsDate.startOf('month')),
+					endDate: getDateISOStrUtil(
+						dayJsDate.endOf('month').add(1, 'day')
+					),
 				};
 
 			case 'daily':
 			default:
 				return {
-					startDate: dayJsDate.format('YYYY-MM-DD'),
-					endDate: dayJsDate.add(1, 'day').format('YYYY-MM-DD'),
+					startDate: getDateISOStrUtil(dayJsDate),
+					endDate: getDateISOStrUtil(dayJsDate.add(1, 'day')),
 				};
 
 			/**
@@ -86,8 +85,8 @@ const SelectTimeIntervalModal = ({
 	const handleDateChange = (value: any) => {
 		onSelect({
 			mode: 'daily',
-			startDate: dayJsUTC(value.date).format('YYYY-MM-DD'),
-			endDate: dayJsUTC(value.date).format('YYYY-MM-DD'),
+			startDate: getDateISOStrUtil(dayJsUTC(value.date)),
+			endDate: getDateISOStrUtil(dayJsUTC(value.date).add(1, 'day')),
 		});
 		setIsDatePickerOpen(false);
 	};
@@ -104,8 +103,8 @@ const SelectTimeIntervalModal = ({
 	}) => {
 		onSelect({
 			mode: 'custom',
-			startDate: dayJsUTC(values.startDate).format('YYYY-MM-DD'),
-			endDate: dayJsUTC(values.endDate).format('YYYY-MM-DD'),
+			startDate: getDateISOStrUtil(dayJsUTC(values.startDate)),
+			endDate: getDateISOStrUtil(dayJsUTC(values.endDate)),
 		});
 		setIsDateRangePickerOpen(false);
 	};

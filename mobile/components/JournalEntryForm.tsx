@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import dayjs from 'dayjs';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
@@ -29,6 +28,7 @@ import ConfirmationModal from './ConfirmationModal';
 import journalEntriesService from '@/api/services/journalEntriesService';
 import showToastsUtil from '@/utils/showToastsUtil';
 import { deleteJournalEntry } from '@/store/slices/journalEntriesSlice';
+import dayJsUTC from '@/utils/dayjs';
 
 type Props = {
 	mode?: 'new' | 'edit' | 'view';
@@ -61,7 +61,7 @@ const JournalEntryForm = ({
 			: {
 					title: '',
 					content: '',
-					entry_date: dayjs().toISOString(),
+					entry_date: dayJsUTC().toISOString(),
 					category_id: undefined,
 			  };
 	}, [formValues]);
@@ -186,7 +186,7 @@ const JournalEntryForm = ({
 							/>
 
 							<ThemedText>
-								{dayjs(formik.values.entry_date).format(
+								{dayJsUTC(formik.values.entry_date).format(
 									'dddd, MMM D, YYYY'
 								)}
 							</ThemedText>
@@ -251,7 +251,7 @@ const JournalEntryForm = ({
 				isVisible={isDatePickerOpen}
 				onClose={closeDatePickerModal}
 				onSelect={handleDateChange}
-				selectedDate={dayjs(formik.values.entry_date)}
+				selectedDate={dayJsUTC(formik.values.entry_date)}
 			/>
 
 			<ConfirmationModal
