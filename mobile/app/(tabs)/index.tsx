@@ -14,14 +14,12 @@ import { IFilterMode } from '@/types/IFilterMode';
 import Spacer from '@/components/Spacer';
 import JournalGroup from '@/components/JournalGroup';
 import DateNavigator from '@/components/DateNavigator';
-import { IJournalEntry } from '@/types/IJournalEntry';
 import { groupDataByMonth } from '@/utils/groupDataByFilterMode';
 import Divider from '@/components/Divider';
 import GreetingCard from '@/components/GreetingCard';
 import { ThemedButton } from '@/components/ThemedButton';
 
 export default function HomeScreen() {
-	const { user } = useAuth();
 	const dispatch = useAppDispatch();
 
 	const { journalEntries } = useAppSelector((state) => state.journalEntry);
@@ -47,7 +45,6 @@ export default function HomeScreen() {
 		journalEntriesService
 			.getAllJournalEntries({ start_date: startDate, end_date: endDate })
 			.then((response) => {
-				console.log(response.data);
 				if (response?.success && response.data) {
 					dispatch(loadJournalEntries(response.data.journalEntries));
 				}
