@@ -38,8 +38,9 @@ const getAllJournalEntries = async (
 			_query += ` AND je.entry_date >= $${queryValues.length}`;
 		}
 		if (params?.end_date) {
+			// This end_date should be expected end date+1 - issue noted in queries
 			queryValues.push(params.end_date);
-			_query += ` AND je.entry_date <= $${queryValues.length}`;
+			_query += ` AND je.entry_date < $${queryValues.length}`;
 		}
 	}
 
