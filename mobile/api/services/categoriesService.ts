@@ -55,10 +55,13 @@ const createCategory = async (newCategory: ICategoryNew) => {
 	}
 };
 
-const updateCategory = async (updatedCategory: ICategoryUpdate) => {
+const updateCategory = async (
+	categoryId: number,
+	updatedCategory: ICategoryUpdate
+) => {
 	try {
 		const response = await axiosClient.put<IUpdateCategoryResponse>(
-			`/categories/`,
+			`/categories/${categoryId}`,
 			updatedCategory
 		);
 

@@ -66,7 +66,10 @@ const CategoriesScreen = () => {
 		setIsUpdateCategoryModalOpen(true);
 	};
 	const onUpdateCategorySubmit = async (updatedCategory: ICategoryUpdate) => {
-		const response = await categoriesService.createCategory(
+		if (!categoryToUpdate) return;
+
+		const response = await categoriesService.updateCategory(
+			categoryToUpdate?.category_id,
 			updatedCategory
 		);
 		if (response.success && response.data) {
