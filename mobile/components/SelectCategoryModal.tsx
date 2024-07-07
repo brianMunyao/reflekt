@@ -11,6 +11,7 @@ import CategoryItem from './CategoryItem';
 import Spacer from './Spacer';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadCategories } from '@/store/slices/categoriesSlice';
+import { PAGE_PADDING } from '@/constants/Dimensions';
 
 type Props = {
 	isVisible: boolean;
@@ -89,7 +90,7 @@ const SelectCategoryModal = ({
 								/>
 							</>
 						)}
-						ItemSeparatorComponent={() => <Spacer h={10} />}
+						ItemSeparatorComponent={() => <Spacer w={10} />}
 					/>
 				</ThemedView>
 			</View>
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		marginHorizontal: PAGE_PADDING,
 	},
 	innerContainer: {
 		minWidth: 300,

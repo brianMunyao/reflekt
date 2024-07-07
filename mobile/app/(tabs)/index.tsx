@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedPage } from '@/components/ThemedPage';
 import { PAGE_PADDING } from '@/constants/Dimensions';
 import journalEntriesService from '@/api/services/journalEntriesService';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadJournalEntries } from '@/store/slices/journalEntriesSlice';
 import showToastsUtil from '@/utils/showToastsUtil';
 import { IFilterMode } from '@/types/IFilterMode';
@@ -23,9 +23,8 @@ import { ThemedButton } from '@/components/ThemedButton';
 export default function HomeScreen() {
 	const { user } = useAuth();
 	const dispatch = useAppDispatch();
-	const [fetchedJournalEntries, setFetchedJournalEntries] = useState<
-		IJournalEntry[]
-	>([]);
+
+	const { journalEntries } = useAppSelector((state) => state.journalEntry);
 
 	const [filterMode, setFilterMode] = useState<IFilterMode>('all');
 
@@ -48,9 +47,9 @@ export default function HomeScreen() {
 		journalEntriesService
 			.getAllJournalEntries({ start_date: startDate, end_date: endDate })
 			.then((response) => {
+				console.log(response.data);
 				if (response?.success && response.data) {
 					dispatch(loadJournalEntries(response.data.journalEntries));
-					setFetchedJournalEntries(response.data.journalEntries);
 				}
 			})
 			.catch((error) => {
@@ -85,7 +84,7 @@ export default function HomeScreen() {
 
 			<FlatList
 				ListHeaderComponent={() => <Spacer h={20} />}
-				data={groupDataByMonth(fetchedJournalEntries)}
+				data={groupDataByMonth(journalEntries)}
 				renderItem={({ item }) => (
 					<JournalGroup
 						sectionDate={item.sectionDate}
