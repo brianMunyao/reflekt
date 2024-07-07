@@ -12,6 +12,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.text('content').notNullable();
 		table
 			.integer('category_id')
+			.nullable()
 			.references('category_id')
 			.inTable('categories');
 		table
